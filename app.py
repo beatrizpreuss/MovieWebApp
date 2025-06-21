@@ -1,7 +1,7 @@
 import os
-from flask import Flask
+from flask import Flask, render_template, request, redirect, url_for
 from data_manager import DataManager
-from models import db, Movie
+from models import db, User, Movie
 
 
 app = Flask(__name__)
@@ -18,16 +18,52 @@ data_manager = DataManager() # Create an object of your DataManager class
 
 
 @app.route('/')
-def home():
-    return "Welcome to MovieWeb App!"
-
-
-@app.route('/users')
-def list_users():
+def index():
+    # Show a list of all registered users and form for adding new users (This route is GET by default)
     users = data_manager.get_users()
-    return str(users)  # Temporarily returning users as a string
+    return render_template('index.html', users=users)
 
 
+@app.route('/users', methods=['POST'])
+#When the user submits the "add user" form, a POST request is made. The server receives the info, adds to db, redirects to /
+def create_user():
+    name = request.form['name']
+    data_manager.create_user(name)
+    return redirect(url_for('index'))
 
-if __name__ == '__main__':#
+
+@app.route('/users/<int:user_id>/movies', methods=['GET'])
+#When you click on a username, the app retrieves that usr's list of favorite movies and displays it
+def get_movies(user_id):
+    movies = data_manager.get_movies(user_id)
+    user = data_manager.get_user(user_id)
+    return render_template('movies.html', movies=movies, user=user)
+
+
+@app.route('/users/<int:user_id>/movies', methods=['POST'])
+def add_movie(user_id):
+    # Add a new movie to a user's list of favorite movies
+    title = request.form["title"]
+    release_year = request.form.get('release_year')
+    data_manager.add_movie(user_id, title, release_year)
+    return redirect(url_for('get_movies', user_id=user_id))
+
+
+@app.route('/users/<int:user_id>/movies/<int:movie_id>/update', methods=['POST'])
+#Update the details of a specific movie in a user's list
+def update_movie(user_id, movie_id):
+    title = request.form["title"]
+    release_year = request.form.get("release_year")
+    data_manager.update_movie(movie_id, title, release_year)
+    return redirect(url_for('get_movies', user_id=user_id))
+
+
+@app.route('/users/<int:user_id>/movies/<int:movie_id>/delete', methods=['POST'])
+#Remove a specific movie from a user's favorite movie list
+def delete_movie(user_id, movie_id):
+    data_manager.delete_movie(movie_id)
+    return redirect(url_for('get_movies', user_id=user_id))
+
+
+if __name__ == '__main__':
     app.run()

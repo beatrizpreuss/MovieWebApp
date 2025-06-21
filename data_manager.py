@@ -1,5 +1,7 @@
 from models import db, User, Movie
 from config import api_key
+import requests
+
 
 class DataManager():
 # Define Crud operations as methods
@@ -14,13 +16,17 @@ class DataManager():
         return users
 
 
+    def get_user(self, user_id):
+    # For movies.html in get_movies (app.py)
+        return User.query.get(user_id)
+
+
     def get_movies(self, user_id):
         movies = Movie.query.filter(Movie.user_id == user_id).all()
         return movies
 
 
-    def add_movie(self, title):
-        api_poster_url = f"http://img.omdbapi.com/?apikey={api_key}&t={title}"
+    def add_movie(self, user_id, title, release_year):
         api_movie_url = f"http://www.omdbapi.com/?apikey={api_key}&t={title}"
         api_movie_response = requests.get(api_movie_url)
         movie_info = api_movie_response.json()
@@ -28,15 +34,27 @@ class DataManager():
             title=title,
             director=movie_info.get("Director"),
             release_year=movie_info.get("Year"),
-            poster_url=api_poster_url
+            poster_url=movie_info.get("Poster"),
+            user_id=user_id
         )
         db.session.add(new_movie)
         db.session.commit()
 
 
-    def update_movie(self, movie_id, new_title):
-        movie_to_update = Movie.query.filter(Movie.movie_id == movie_id).one()
-        movie_to_update.title = new_title
+    def update_movie(self, movie_id, new_title, release_year):
+        movie = Movie.query.get(movie_id)
+        if not movie:
+            return
+
+        api_movie_url = f"http://www.omdbapi.com/?apikey={api_key}&t={new_title}"
+        response = requests.get(api_movie_url)
+        data = response.json()
+
+        movie.title = new_title
+        movie.director = data.get("Director")
+        movie.release_year = release_year or data.get("Year")
+        movie.poster_url = data.get("Poster")
+
         db.session.commit()
 
 
