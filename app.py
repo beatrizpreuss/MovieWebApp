@@ -1,5 +1,5 @@
 import os
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, jsonify
 from data_manager import DataManager
 from models import db, User, Movie
 
@@ -63,6 +63,16 @@ def update_movie(user_id, movie_id):
 def delete_movie(user_id, movie_id):
     data_manager.delete_movie(movie_id)
     return redirect(url_for('get_movies', user_id=user_id))
+
+
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('404.html'), 404
+
+
+@app.errorhandler(500)
+def internal_error(e):
+    return jsonify({'error': 'Server error'}), 500
 
 
 if __name__ == '__main__':
