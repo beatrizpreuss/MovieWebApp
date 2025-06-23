@@ -5,8 +5,16 @@ import requests
 
 
 class DataManager():
-# Define Crud operations as methods
     def create_user(self, name):
+        """Create and save a new user to the database.
+
+        Args:
+            name (str): The name of the user.
+
+        Returns:
+            User: The newly created User object if successful.
+            None: If an error occurred.
+        """
         new_user = User(name=name)
         try:
             db.session.add(new_user)
@@ -18,6 +26,12 @@ class DataManager():
 
 
     def get_users(self):
+        """Retrieve all users from the database.
+
+        Returns:
+            list[User]: A list of User objects.
+            None: If an error occurred.
+        """
         try:
             users = User.query.all()
             return users
@@ -30,7 +44,15 @@ class DataManager():
 
 
     def get_user(self, user_id):
-    # For movies.html in get_movies (app.py)
+        """Retrieve a single user by their ID.
+
+        Args:
+            user_id (int): The ID of the user.
+
+        Returns:
+            User: The User object if found.
+            None: If the user does not exist or an error occurred.
+        """
         try:
             return User.query.get(user_id)
         except SQLAlchemyError as e:
@@ -42,6 +64,15 @@ class DataManager():
 
 
     def get_movies(self, user_id):
+        """Retrieve all movies associated with a user.
+
+        Args:
+            user_id (int): The ID of the user.
+
+        Returns:
+            list[Movie]: A list of Movie objects associated with the user.
+            None: If an error occurred.
+        """
         try:
             movies = Movie.query.filter(Movie.user_id == user_id).all()
             return movies
@@ -54,6 +85,17 @@ class DataManager():
 
 
     def add_movie(self, user_id, title, release_year):
+        """Add a new movie to a user's favorites using OMDB data.
+
+        Args:
+            user_id (int): The ID of the user.
+            title (str): The title of the movie.
+            release_year (str or None): The release year of the movie.
+
+        Returns:
+            Movie: The newly created Movie object if successful.
+            None: If an error occurred or the movie was not found.
+        """
         api_movie_url = f"http://www.omdbapi.com/?apikey={api_key}&t={title}"
         try:
             api_movie_response = requests.get(api_movie_url)
@@ -86,6 +128,17 @@ class DataManager():
 
 
     def update_movie(self, movie_id, new_title, release_year):
+        """Update an existing movie's details using OMDB data.
+
+        Args:
+            movie_id (int): The ID of the movie to update.
+            new_title (str): The new title to search in OMDB.
+            release_year (str or None): Optional release year to update.
+
+        Returns:
+            Movie: The updated Movie object if successful.
+            None: If the movie is not found or an error occurred.
+        """
         movie = Movie.query.get(movie_id)
         if not movie:
             return
@@ -118,6 +171,14 @@ class DataManager():
 
 
     def delete_movie(self, movie_id):
+        """Delete a movie from the database.
+
+        Args:
+            movie_id (int): The ID of the movie to delete.
+
+        Returns:
+            bool: True if a movie was successfully deleted, False otherwise.
+        """
         try:
             movie_deleted = Movie.query.filter(Movie.movie_id == movie_id).delete()
             db.session.commit()
