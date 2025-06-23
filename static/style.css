@@ -3,18 +3,15 @@
   box-sizing: border-box;
 }
 
-html, body {
+body {
   height: 100%;
   margin: 0;
   font-family: Arial, sans-serif;
   background-color: #fdfdfd;
   color: #333;
-}
-
-body {
   display: flex;
   flex-direction: column;
-}
+
 
 /* Container for consistent padding */
 .container {
@@ -24,16 +21,9 @@ body {
   width: 100%;
 }
 
-/* Layout wrapper to keep footer at the bottom */
-.layout-wrapper {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-}
-
 /* Navbar */
 nav {
-  background-color: #89b0ae;
+  background-color: #78a1bb;
   padding: 30px 0;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
@@ -51,19 +41,29 @@ nav .logo {
   letter-spacing: 1px;
 }
 
-/* Footer */
-footer {
-  background-color: #89b0ae;
-  color: white;
-  text-align: center;
-  padding: 20px;
-  margin-top: auto;
-}
-
 /* Main content */
 main.container {
   flex: 1;
   padding: 40px 0;
+}
+
+/* Layout wrapper to keep footer at the bottom */
+.layout-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  width: 100%;
+}
+
+/* Footer */
+footer {
+  background-color: #78a1bb;
+  height: 100px;
+  width: 100%;
+  color: white;
+  text-align: center;
+  padding: 20px;
+  margin-top: auto;
 }
 
 /* Headings */
@@ -74,7 +74,7 @@ h1, h2 {
 
 /* Buttons */
 .btn {
-  background: #555b6e;
+  background: #565a5c;
   color: white;
   border: none;
   border-radius: 6px;
@@ -85,19 +85,21 @@ h1, h2 {
   display: inline-block;
 }
 
-
 /* User List */
-.user-list {
-  list-style: none;
-  padding: 0;
-  margin-bottom: 30px;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-}
-
-.user-entry {
-  margin-bottom: 10px;
+.user-btn {
+  color: black;
+  height: 80%;
+  width: 80%;
+  border: none;
+  border-radius: 6px;
+  padding: 50px;
+  font-size: 1.5rem;
+  text-align: center;
+  margin: 10px;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
 }
 
 /* Form inputs */
@@ -131,8 +133,22 @@ input[type="number"] {
   align-items: center;
 }
 
-.card img {
-  max-height: 200px;
+.user-card {
+  background: none;
+  box-shadow: none;
+  border: none;
+}
+
+.card-top {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.card-top img {
+  max-width: 200px;
   margin-bottom: 10px;
   border-radius: 6px;
 }
@@ -162,6 +178,11 @@ input[type="number"] {
   gap: 10px;
   width: 100%;
   margin-top: 10px;
+}
+
+.card-form-wrapper {
+    margin-top: auto;
+    width: 100%
 }
 
 .card-form + .card-form {

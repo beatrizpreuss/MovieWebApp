@@ -2,16 +2,20 @@
 
 {% block content %}
 
-    <h1>Users</h1>
-    <ul class="user-list">
-        {% for user in users %}
-        <li class="user-entry">
-            <a href="{{ url_for('get_movies', user_id=user.user_id) }}" class="btn">{{ user.name }}</a>
-        </li>
-        {% endfor %}
-    </ul>
-    <form action="{{ url_for('create_user')}}" method="post">
-        <input type="text" id="name" name="name" required>
-        <button type=submit class="btn">Add User</button>
-    </form>
+<h1>Users</h1>
+<div class="card-list">
+    {% for user in users %}
+    <div class="card user-card">
+        <a href="{{ url_for('get_movies', user_id=user.user_id) }}" class="user-btn"><b>{{ user.name }}</b></a>
+        <form action="{{ url_for('delete_user', user_id=user.user_id) }}" method="post">
+            <button type="submit" class="btn btn-delete">Delete</button>
+        </form>
+    </div>
+    {% endfor %}
+</div>
+<form action="{{ url_for('create_user')}}" method="post" class="new-user">
+    <input type="text" id="name" name="name" required>
+    <button type=submit class="btn">Add User</button>
+</form>
+
 {% endblock %}

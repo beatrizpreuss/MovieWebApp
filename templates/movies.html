@@ -5,37 +5,39 @@
 <a href="/" class="back-link"><-- Back to users</a>
 <h1>Movies for {{ user.name }}</h1>
 <div class="card-list">
-{% for movie in movies %}
-    <div class="card">
-        <img src="{{ movie.poster_url }}" alt="Poster for {{ movie.title }}">
-        <h2> {{ movie.title }}</h2>
-        <ul>
-            <li>Year: {{ movie.release_year }}</li>
-            <li>Director: {{ movie.director }}</li>
-        </ul>
-        <form action="{{ url_for('delete_movie', user_id=user.user_id, movie_id=movie.movie_id) }}" method="post" class="card-form">
-            <button type="submit" class="btn btn-delete">Delete</button>
-        </form>
-        <form action="{{ url_for('update_movie', user_id=user.user_id, movie_id=movie.movie_id) }}" method="post" class="card-form">
-            <input type="text" name="title" placeholder="New Title" required>
-            <input type="number" name="release_year" placeholder="Year (optional)">
-            <button type="submit" class="btn">Update</button>
-        </form>
-    </div>
-{% endfor %}
+    {% for movie in movies %}
+        <div class="card">
+            <div class="card-top">
+                <img src="{{ movie.poster_url }}" alt="Poster for {{ movie.title }}">
+                <h2> {{ movie.title }}</h2>
+                <ul>
+                    <li><b>Year:</b> {{ movie.release_year }}</li>
+                    <li><b>Director:</b> {{ movie.director }}</li>
+                </ul>
+            </div>
+            <form action="{{ url_for('delete_movie', user_id=user.user_id, movie_id=movie.movie_id) }}" method="post" class="card-form">
+                <button type="submit" class="btn btn-delete">Delete</button>
+            </form>
+            <div class="card-form-wrapper">
+                <form action="{{ url_for('update_movie', user_id=user.user_id, movie_id=movie.movie_id) }}" method="post" class="card-form">
+                    <input type="text" name="title" placeholder="New Title" required>
+                    <input type="number" name="release_year" placeholder="Year (optional)">
+                    <button type="submit" class="btn">Update</button>
+                </form>
+            </div>
+        </div>
+    {% endfor %}
 </div>
 
-
-
-    <div class="form-selection">
-        <h2>Add New Movie</h2>
-        <form action="{{ url_for('add_movie', user_id=user.user_id) }}" method="post">
-            <label for="title">Movie title</label>
-            <input type="text" id="title" name="title" required><br>
-            <label for="release_year">Year (optional)</label>
-            <input type="number" id="release_year" name="release_year"><br>
-            <button type=submit class="btn"t>Add Movie</button>
-        </form>
-    </div>
+<div class="form-selection">
+    <h2>Add New Movie</h2>
+    <form action="{{ url_for('add_movie', user_id=user.user_id) }}" method="post">
+        <label for="title">Movie title</label>
+        <input type="text" id="title" name="title" required><br>
+        <label for="release_year">Year (optional)</label>
+        <input type="number" id="release_year" name="release_year"><br>
+        <button type=submit class="btn"t>Add Movie</button>
+    </form>
+</div>
 
 {% endblock %}
