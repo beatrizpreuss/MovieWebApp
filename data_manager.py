@@ -63,6 +63,26 @@ class DataManager():
             return None
 
 
+    def delete_user(self, user_id):
+        """
+        Deletes a user from the database by their user ID.
+
+        Args:
+            user_id (int): The unique identifier of the user to delete.
+
+        Returns:
+            bool: True if a user was successfully deleted, False otherwise.
+        """
+        try:
+            user_deleted = User.query.filter(User.user_id == user_id).delete()
+            db.session.commit()
+            return user_deleted > 0 # returns True if a user was deleted
+        except Exception as e:
+            db.session.rollback()
+            print("An error has occurred while deleting user: ", str(e))
+            return False
+
+
     def get_movies(self, user_id):
         """Retrieve all movies associated with a user.
 
@@ -187,3 +207,4 @@ class DataManager():
             db.session.rollback()
             print("An error has occurred while deleting movie: ", str(e))
             return False
+

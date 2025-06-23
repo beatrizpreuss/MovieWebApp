@@ -104,6 +104,21 @@ def delete_movie(user_id, movie_id):
     return redirect(url_for('get_movies', user_id=user_id))
 
 
+@app.route('/users/<int:user_id>/delete', methods=['POST'])
+def delete_user(user_id):
+    """
+    Deletes a user by their ID and redirects to the index page.
+
+    Args:
+        user_id (int): The unique identifier of the user to delete.
+
+    Returns:
+        HTTP Response: A redirect response to the index page.
+    """
+    data_manager.delete_user(user_id)
+    return redirect(url_for('index'))
+
+
 @app.errorhandler(404)
 def page_not_found(e):
     """Render a custom 404 error page when a page is not found.
