@@ -2,17 +2,21 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="/static/style.css">
     <title>Movie App</title>
 </head>
 <body>
-  <header>
-  </header>
-  <nav>
-  </nav>
-  <main class="container">
-        {% block content %}{% endblock %}
-  </main>
-
+    <div class="layout-wrapper">
+        <nav>
+            <div class="container">
+                <div class="logo">🎬 Movie App</div>
+            </div>
+        </nav>
+        <main class="container">
+            {% block content %}{% endblock %}
+        </main>
+        <footer class="container">
+        </footer>
+    </div>
 </body>
 </html>
