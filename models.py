@@ -13,6 +13,7 @@ class Movie(db.Model):
     title = db.Column(db.String(100), nullable=False)
     director = db.Column(db.String(100))
     release_year = db.Column(db.Integer)
+    rating = db.Column(db.Float)
     poster_url = db.Column(db.String)
     user_id = db.Column(db.Integer, db.ForeignKey('user.user_id'), nullable=False) # Link Movie to User
 

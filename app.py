@@ -24,7 +24,6 @@ def index():
     Returns:
         str: Rendered HTML template for the index page.
     """
-    # Show a list of all registered users and form for adding new users (This route is GET by default)
     users = data_manager.get_users()
     return render_template('index.html', users=users)
 
@@ -146,4 +145,7 @@ def internal_error(e):
 
 
 if __name__ == '__main__':
+#     with app.app_context():
+#         db.create_all()
+#
     app.run()

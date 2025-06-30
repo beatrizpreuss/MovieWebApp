@@ -133,6 +133,7 @@ class DataManager():
             title=title,
             director=movie_info.get("Director"),
             release_year=movie_info.get("Year"),
+            rating=movie_info.get("imdbRating"),
             poster_url=movie_info.get("Poster"),
             user_id=user_id
         )
@@ -179,6 +180,7 @@ class DataManager():
         movie.title = new_title
         movie.director = data.get("Director")
         movie.release_year = release_year or data.get("Year")
+        movie.rating = data.get("imdbRating")
         movie.poster_url = data.get("Poster")
 
         try:
