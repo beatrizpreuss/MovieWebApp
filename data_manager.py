@@ -148,13 +148,14 @@ class DataManager():
         return new_movie
 
 
-    def update_movie(self, movie_id, new_title, release_year):
-        """Update an existing movie's details using OMDB data.
+    def update_movie(self, movie_id, new_title, release_year, rating):
+        """Update an existing movie's details using user-provided data only.
 
         Args:
             movie_id (int): The ID of the movie to update.
-            new_title (str): The new title to search in OMDB.
-            release_year (str or None): Optional release year to update.
+            new_title (str or None): Optional new title to update.
+            release_year (str or None): Optional new release year to update.
+            rating (str or None): Optional rating to update.
 
         Returns:
             Movie: The updated Movie object if successful.
@@ -164,24 +165,12 @@ class DataManager():
         if not movie:
             return
 
-        api_movie_url = f"http://www.omdbapi.com/?apikey={api_key}&t={new_title}"
-        try:
-            response = requests.get(api_movie_url)
-            response.raise_for_status()
-            data = response.json()
-        except requests.RequestException as e:
-            print("Failed to fetch movie from OMDB:", str(e))
-            return None
-
-        if data.get("Response") == "False":
-            print("OMDB Error:", data.get("Error"))
-            return None
-
-        movie.title = new_title
-        movie.director = data.get("Director")
-        movie.release_year = release_year or data.get("Year")
-        movie.rating = data.get("imdbRating")
-        movie.poster_url = data.get("Poster")
+        if new_title:
+            movie.title = new_title
+        if release_year:
+            movie.release_year = release_year
+        if rating:
+            movie.rating = rating
 
         try:
             db.session.commit()

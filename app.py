@@ -82,9 +82,10 @@ def update_movie(user_id, movie_id):
     Returns:
         HTTP Response: Redirect to the user's movie list.
     """
-    title = request.form["title"]
+    title = request.form.get("title")
     release_year = request.form.get("release_year")
-    data_manager.update_movie(movie_id, title, release_year)
+    rating = request.form.get("rating")
+    data_manager.update_movie(movie_id, title, release_year, rating)
     return redirect(url_for('get_movies', user_id=user_id))
 
 
